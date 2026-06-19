@@ -1,0 +1,213 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CAO Operations Management System (OMS) - Tester Access</title>
+  <style>
+    :root{
+      --navy:#0f172a;
+      --blue:#1f5fb8;
+      --blue-dark:#15366d;
+      --red:#b42318;
+      --gold:#b7791f;
+      --green:#166534;
+      --slate:#475569;
+      --slate-2:#64748b;
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --line:#dbe3ee;
+      --shadow:0 24px 64px rgba(15,23,42,.22);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Segoe UI, Arial, Helvetica, sans-serif;
+      background:linear-gradient(135deg, #0f172a 0%, #173a74 40%, #7c2d12 100%);
+      color:#111827;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .shell{
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      background:rgba(255,255,255,.95);
+      border:1px solid rgba(255,255,255,.55);
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .panel-left{
+      padding:34px 32px 30px;
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+    }
+    .band{height:10px;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--green),var(--gold),var(--red));margin-bottom:24px}
+    .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate-2);font-weight:800;margin-bottom:10px}
+    h1{margin:0 0 10px;font-size:34px;line-height:1.05;color:var(--navy)}
+    .sub{font-size:15px;line-height:1.55;color:var(--slate);margin:0 0 18px}
+    .meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 18px}
+    .meta{border:1px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px}
+    .meta .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-2);font-weight:800;margin-bottom:4px}
+    .meta .v{font-size:14px;font-weight:700;color:var(--navy)}
+    .note{font-size:13px;color:var(--slate);line-height:1.5;margin-top:12px}
+    .risk{margin-top:18px;padding:14px 16px;border:1px solid #fed7aa;background:#fff7ed;border-radius:16px;color:#9a3412;font-size:13px;line-height:1.45}
+
+    .panel-right{
+      padding:34px 30px 30px;
+      background:linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+      border-left:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .card{width:min(420px,100%);background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px 22px;box-shadow:0 16px 40px rgba(31,95,184,.10)}
+    .lock{width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;box-shadow:0 12px 24px rgba(21,54,109,.24);margin-bottom:16px}
+    .card h2{margin:0 0 8px;font-size:24px;color:var(--navy)}
+    .card p{margin:0 0 16px;font-size:14px;color:var(--slate);line-height:1.5}
+    label{display:block;font-size:12px;font-weight:800;color:var(--slate-2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+    .input{width:100%;padding:14px 14px;border:1px solid #cbd5e1;border-radius:14px;font-size:15px;outline:none;color:#111827;background:#fff}
+    .input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(31,95,184,.14)}
+    .row{display:flex;gap:10px;align-items:center;margin-top:14px}
+    .btn{appearance:none;border:none;border-radius:14px;padding:14px 16px;font-size:14px;font-weight:800;cursor:pointer}
+    .btn-primary{background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;min-width:136px;box-shadow:0 12px 24px rgba(21,54,109,.24)}
+    .btn-secondary{background:#eef4fb;color:var(--blue-dark);border:1px solid #d7e4f6}
+    .error{display:none;margin-top:14px;padding:12px 14px;border-radius:14px;border:1px solid #fecdd3;background:#fff1f2;color:#9f1239;font-size:13px;font-weight:700}
+    .success{display:none;margin-top:14px;padding:12px 14px;border-radius:14px;border:1px solid #bbf7d0;background:#f0fdf4;color:#166534;font-size:13px;font-weight:700}
+    .footer{margin-top:16px;font-size:12px;color:var(--slate-2);line-height:1.45}
+    code{background:#f1f5f9;padding:2px 6px;border-radius:8px;border:1px solid #e2e8f0;font-family:Consolas, monospace;font-size:12px}
+
+    @media (max-width: 860px){
+      .shell{grid-template-columns:1fr}
+      .panel-right{border-left:none;border-top:1px solid var(--line)}
+    }
+    @media (max-width: 520px){
+      body{padding:14px}
+      .panel-left,.panel-right{padding:22px 18px}
+      .meta-grid{grid-template-columns:1fr}
+      h1{font-size:28px}
+      .row{flex-direction:column}
+      .btn,.btn-primary,.btn-secondary{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="panel-left">
+      <div class="band"></div>
+      <div class="eyebrow">Tester Access Gate</div>
+      <h1>CAO Operations Management System (OMS)</h1>
+      <p class="sub">This login screen provides lightweight password gating for testers before they are redirected to the live OMS site.</p>
+
+      <div class="meta-grid">
+        <div class="meta">
+          <div class="k">Destination</div>
+          <div class="v" id="destinationLabel">CAO-OMS GitHub Pages</div>
+        </div>
+        <div class="meta">
+          <div class="k">Use case</div>
+          <div class="v">Internal testing / pilot access</div>
+        </div>
+        <div class="meta">
+          <div class="k">Session behavior</div>
+          <div class="v">Remembers access in this browser</div>
+        </div>
+        <div class="meta">
+          <div class="k">Password setting</div>
+          <div class="v">Edit one constant in this file</div>
+        </div>
+      </div>
+
+      <div class="note">After a correct password, the gate redirects to the live OMS URL. To change the password later, edit the <code>SITE_PASSWORD</code> constant near the top of the script.</div>
+      <div class="risk"><strong>Important:</strong> This is a lightweight client-side gate for preview/tester friction only. It is not a server-side security control.</div>
+    </section>
+
+    <section class="panel-right">
+      <div class="card">
+        <div class="lock">🔒</div>
+        <h2>Open OMS</h2>
+        <p>Enter the tester password to continue to the CAO-OMS site.</p>
+
+        <label for="password">Tester password</label>
+        <input id="password" class="input" type="password" placeholder="Enter password" autocomplete="current-password" />
+
+        <div class="row">
+          <button id="openBtn" class="btn btn-primary" type="button">Open OMS</button>
+          <button id="resetBtn" class="btn btn-secondary" type="button">Clear session</button>
+        </div>
+
+        <div id="errorBox" class="error">Incorrect password. Please try again.</div>
+        <div id="successBox" class="success">Access granted. Redirecting to OMS…</div>
+
+        <div class="footer">
+          <div><strong>Target URL:</strong> <code id="targetUrlText"></code></div>
+          <div style="margin-top:8px">If you want this gate to be the page users open first, save it as <code>index.html</code> in the root of your GitHub Pages repository.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function(){
+      const TARGET_URL = 'https://cao-initatives.github.io/CAO-OMS/';
+      const SITE_PASSWORD = 'CAO-OMS-2026!'; // replace with your real tester password
+      const ACCESS_KEY = 'cao_oms_gate_access';
+
+      const $ = (id) => document.getElementById(id);
+      const passwordInput = $('password');
+      const openBtn = $('openBtn');
+      const resetBtn = $('resetBtn');
+      const errorBox = $('errorBox');
+      const successBox = $('successBox');
+      $('targetUrlText').textContent = TARGET_URL;
+      $('destinationLabel').textContent = TARGET_URL.replace(/^https?:\/\//,'').replace(/\/$/,'');
+
+      function clearMessages(){
+        errorBox.style.display = 'none';
+        successBox.style.display = 'none';
+      }
+      function grantAccess(){
+        localStorage.setItem(ACCESS_KEY, 'ok');
+        clearMessages();
+        successBox.style.display = 'block';
+        window.location.href = TARGET_URL;
+      }
+      function checkStoredAccess(){
+        if(localStorage.getItem(ACCESS_KEY) === 'ok'){
+          successBox.style.display = 'block';
+          successBox.textContent = 'Existing tester session found. Redirecting to OMS…';
+          window.location.href = TARGET_URL;
+        }
+      }
+      function submit(){
+        clearMessages();
+        if(passwordInput.value === SITE_PASSWORD){
+          grantAccess();
+        } else {
+          errorBox.style.display = 'block';
+          passwordInput.value = '';
+          passwordInput.focus();
+        }
+      }
+      openBtn.addEventListener('click', submit);
+      resetBtn.addEventListener('click', function(){
+        localStorage.removeItem(ACCESS_KEY);
+        clearMessages();
+        passwordInput.value = '';
+        passwordInput.focus();
+      });
+      passwordInput.addEventListener('keydown', function(e){
+        if(e.key === 'Enter') submit();
+      });
+      setTimeout(() => passwordInput.focus(), 60);
+      checkStoredAccess();
+    })();
+  </script>
+</body>
+</html>
